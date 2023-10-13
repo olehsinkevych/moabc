@@ -6,39 +6,34 @@ import numpy as np
 
 TParticle = TypeVar("TParticle", bound="Particle")
 
-
 class Particle:
     """Particle as a solution to multi-objective optimization"""
 
-    __slots__ = ("id", "dim", "velocity", "position",
-                 "cost", "dominated", "is_improved",
-                 "trial", "l_bound", "u_bound")
+    # slots are used to optimize class performance
+    __slots__ = ("id", "dim", "position",
+                 "cost", "dominated", "l_bound", "u_bound")
 
     def __init__(self, id: int, dim: int,
                  l_bound: np.array = np.array([]),
                  u_bound: np.array = np.array([]),
-                 dominated: bool = False,
-                 velocity: float = 0) -> None:
-        self.id = id
-        self.dim = dim
-        self.velocity = velocity
-        self.position = np.zeros(dim)
-        self.cost = None
-        self.dominated = dominated
-        self.is_improved = False
-        self.trial = 0
-        self.l_bound = l_bound
-        self.u_bound = u_bound
+                 dominated: bool = False) -> None:
+        self.id = id  # particle id
+        self.dim = dim  # dimension of the problem
+        self.position = np.zeros(dim)  # initial solution x
+        self.cost = None  # objective functions values
+        self.dominated = dominated  # domination label
+        self.l_bound = l_bound  # lower bound for each x component
+        self.u_bound = u_bound  # upper bound for each x component
 
     def initialize_position(self) -> np.array:
         """Initialize first random position."""
         for j in range(self.dim):
             lb = self.l_bound[j]
             ub = self.u_bound[j]
-            self.position[j] = lb + np.random.uniform(low=0, high=1) * (ub - lb)
+            self.position[j] = lb + np.random.uniform(low=0, high=1)*(ub - lb)
 
     def set_cost(self, f: Callable) -> None:
-        """Calculates cost"""
+        """Calculates cost/objectives"""
         self.cost = f(x=self.position, dimension=self.dim)
 
     def dominates(self, other: TParticle) -> bool:
