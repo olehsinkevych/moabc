@@ -63,8 +63,8 @@ class Particle:
 
     def __repr__(self) -> str:
         """Representation of the Particle (self)"""
-                return (f"Particle(id={self.id}, dim={self.sim} \n "
-                f"position={self.position}, \n cost={self.cost}, "
-                f"dominated={self.dominated} \n "
-                f"l_bound={self.l_bound}, \n"
-                f"u_bound={self.u_bound}")
+        return (f"Particle(id={self.id}, dim={self.sim} \n "
+        f"position={self.position}, \n cost={self.cost}, "
+        f"dominated={self.dominated} \n "
+        f"l_bound={self.l_bound}, \n"
+        f"u_bound={self.u_bound}")
